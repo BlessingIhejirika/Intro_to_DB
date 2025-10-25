@@ -1,46 +1,49 @@
-
+-- Create the database if it does not exist
 CREATE DATABASE IF NOT EXISTS alx_book_store;
 USE alx_book_store;
 
-
-CREATE TABLE IF NOT EXISTS AUTHORS (
-    AUTHOR_ID INT AUTO_INCREMENT PRIMARY KEY,
-    NAME VARCHAR(100) NOT NULL,
-    COUNTRY VARCHAR(100)
+-- Create Authors table
+CREATE TABLE IF NOT EXISTS Authors (
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    author_name VARCHAR(100) NOT NULL,
+    country VARCHAR(100)
 );
 
-
-
-CREATE TABLE IF NOT EXISTS BOOKS (
-    BOOK_ID INT AUTO_INCREMENT PRIMARY KEY,
-    TITLE VARCHAR(200) NOT NULL,
-    AUTHOR_ID INT,
-    PRICE DECIMAL(10,2),
-    PUBLISHED_YEAR INT
+-- Create Books table
+CREATE TABLE IF NOT EXISTS Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    author_id INT,
+    price DECIMAL(10,2),
+    published_year INT,
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
 );
 
-
-CREATE TABLE IF NOT EXISTS CUSTOMERS (
-    CUSTOMER_ID INT AUTO_INCREMENT PRIMARY KEY,
-    NAME VARCHAR(100) NOT NULL,
-    EMAIL VARCHAR(100) UNIQUE,
-    ADDRESS VARCHAR(255),
-    PHONE VARCHAR(20)
+-- Create Customers table
+CREATE TABLE IF NOT EXISTS Customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    address VARCHAR(255),
+    phone VARCHAR(20)
 );
 
-
-CREATE TABLE IF NOT EXISTS ORDERS (
-    ORDER_ID INT AUTO_INCREMENT PRIMARY KEY,
-    CUSTOMER_ID INT,
-    ORDER_DATE DATE,
-    STATUS VARCHAR(50)
+-- Create Orders table
+CREATE TABLE IF NOT EXISTS Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    status VARCHAR(50),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 );
 
-
-CREATE TABLE IF NOT EXISTS ORDER_DETAILS (
-    ORDER_DETAIL_ID INT AUTO_INCREMENT PRIMARY KEY,
-    ORDER_ID INT,
-    BOOK_ID INT,
-    QUANTITY INT,
-    TOTAL_PRICE DECIMAL(10,2)
+-- Create Order_Details table
+CREATE TABLE IF NOT EXISTS Order_Details (
+    order_detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    book_id INT,
+    quantity INT,
+    total_price DECIMAL(10,2),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
 );
